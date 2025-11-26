@@ -1,0 +1,147 @@
+# Makefile_lst_filter
+# P-type Endpoint Filter for macOS
+# Automatically finds Eigen installation
+
+CXX = g++
+CXXFLAGS = -std=c++17 -O3 -Wall -Wextra
+
+# Auto-detect Eigen path on macOS
+# Try multiple common locations
+EIGEN_PATHS := \
+	/opt/homebrew/include/eigen3 \
+	/usr/local/include/eigen3 \
+	/opt/local/include/eigen3 \
+	/usr/include/eigen3 \
+	$(HOME)/eigen3 \
+	./eigen3
+
+# Find first existing path
+EIGEN_PATH := $(firstword $(foreach path,$(EIGEN_PATHS),$(wildcard $(path))))
+
+# If not found, use default and show warning
+ifeq ($(EIGEN_PATH),)
+    $(warning ========================================)
+    $(warning Eigen3 not found in common locations!)
+    $(warning Please install with: brew install eigen)
+    $(warning Or specify path: make -f Makefile_lst_filter EIGEN_PATH=/your/path)
+    $(warning ========================================)
+    EIGEN_PATH := /usr/local/include/eigen3
+endif
+
+INCLUDES = -I. -I$(EIGEN_PATH)
+
+# Source files
+SOURCES = filter_P_type_LST.cpp \
+          Tensor.C \
+          Topology_enhanced.cpp \
+          TopoLineCompact_enhanced.cpp \
+          TopologyDB_enhanced.cpp
+
+# Object files
+OBJECTS = $(SOURCES:.cpp=.o)
+OBJECTS := $(OBJECTS:.C=.o)
+
+# Target
+TARGET = filter_P_type_LST
+
+# Colors for output
+COLOR_GREEN = \033[0;32m
+COLOR_BLUE = \033[0;34m
+COLOR_RESET = \033[0m
+
+all: show-config $(TARGET)
+
+show-config:
+	@echo "========================================="
+	@echo "  P-type LST Filter - Build Configuration"
+	@echo "========================================="
+	@echo "Compiler: $(CXX)"
+	@echo "Flags:    $(CXXFLAGS)"
+	@echo "Eigen:    $(EIGEN_PATH)"
+	@echo "========================================="
+	@echo ""
+
+$(TARGET): $(OBJECTS)
+	@echo "$(COLOR_BLUE)[Linking]$(COLOR_RESET) $@"
+	$(CXX) $(CXXFLAGS) -o $@ $^
+	@echo ""
+	@echo "$(COLOR_GREEN)=========================================$(COLOR_RESET)"
+	@echo "$(COLOR_GREEN)  Build Successful!$(COLOR_RESET)"
+	@echo "$(COLOR_GREEN)=========================================$(COLOR_RESET)"
+	@echo "Executable: $(TARGET)"
+	@echo ""
+	@echo "Usage:"
+	@echo "  ./$(TARGET) <input_file> <output_db>"
+	@echo "  ./$(TARGET) <input_file> <output_db> --verbose"
+	@echo "  ./$(TARGET) <input_file> <output_db> --quiet"
+	@echo ""
+	@echo "Example:"
+	@echo "  ./$(TARGET) g.txt P_type_output.db"
+	@echo "  ./$(TARGET) g.txt P_type_output.db --verbose"
+	@echo ""
+
+%.o: %.cpp
+	@echo "$(COLOR_BLUE)[Compiling]$(COLOR_RESET) $<"
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+%.o: %.C
+	@echo "$(COLOR_BLUE)[Compiling]$(COLOR_RESET) $<"
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+clean:
+	@echo "Cleaning build files..."
+	rm -f $(OBJECTS) $(TARGET)
+	@echo "Done!"
+
+rebuild: clean all
+
+# Check if Eigen is properly installed
+check-eigen:
+	@echo "Checking for Eigen3..."
+	@if [ -d "$(EIGEN_PATH)" ]; then \
+		echo "$(COLOR_GREEN)✓ Found Eigen at: $(EIGEN_PATH)$(COLOR_RESET)"; \
+		if [ -f "$(EIGEN_PATH)/Eigen/Dense" ]; then \
+			echo "$(COLOR_GREEN)✓ Eigen/Dense exists$(COLOR_RESET)"; \
+		else \
+			echo "$(COLOR_RED)✗ Eigen/Dense not found!$(COLOR_RESET)"; \
+		fi \
+	else \
+		echo "$(COLOR_RED)✗ Eigen not found at: $(EIGEN_PATH)$(COLOR_RESET)"; \
+		echo ""; \
+		echo "Install Eigen with:"; \
+		echo "  brew install eigen"; \
+		echo ""; \
+		echo "Or download from: https://eigen.tuxfamily.org/"; \
+	fi
+
+# Install Eigen (macOS only)
+install-eigen:
+	@echo "Installing Eigen3 via Homebrew..."
+	@if command -v brew >/dev/null 2>&1; then \
+		brew install eigen; \
+		echo "$(COLOR_GREEN)Eigen installed!$(COLOR_RESET)"; \
+	else \
+		echo "Homebrew not found. Install from: https://brew.sh"; \
+		echo "Or install Eigen manually from: https://eigen.tuxfamily.org/"; \
+	fi
+
+# Show help
+help:
+	@echo "Makefile_lst_filter - P-type LST Filter"
+	@echo ""
+	@echo "Targets:"
+	@echo "  make -f Makefile_lst_filter              Build the program"
+	@echo "  make -f Makefile_lst_filter clean        Remove build files"
+	@echo "  make -f Makefile_lst_filter rebuild      Clean and rebuild"
+	@echo "  make -f Makefile_lst_filter check-eigen  Verify Eigen installation"
+	@echo "  make -f Makefile_lst_filter install-eigen Install Eigen via brew"
+	@echo "  make -f Makefile_lst_filter help         Show this help"
+	@echo ""
+	@echo "Manual Eigen path:"
+	@echo "  make -f Makefile_lst_filter EIGEN_PATH=/your/path/to/eigen3"
+	@echo ""
+	@echo "After build:"
+	@echo "  ./filter_P_type_LST <input> <output>"
+	@echo "  ./filter_P_type_LST g.txt output.db --verbose"
+
+.PHONY: all clean rebuild check-eigen install-eigen help show-config

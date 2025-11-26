@@ -1,0 +1,33 @@
+(lldb) target create "./filter_P_type_LST"
+Current executable set to '/Users/seongminjeon/Desktop/external_generator/filter_P_type_LST' (arm64).
+(lldb) settings set -- target.run-args  "test_simple.txt" "test_out"
+(lldb) run
+Loaded 1 topologies from line-compact file
+
+Processing topologies...
+
+[DEBUG] Processing only first 5 topologies for debugging
+Processed 1 / 1 (100%)...[DEBUG] Building graph for: line_1 blocks=1 externals=1 e_conn=1
+[DEBUG] Processing 1 external connections
+[DEBUG]   e_conn[0]: external_id=0 parent_type=2 parent_id=0 port_idx=0
+[DEBUG]   Instanton parent OK: node_id=1
+[DEBUG]   Connecting external[0] to parent node 1 at port 0
+[DEBUG]   Connection SUCCESS
+Process 13432 stopped
+* thread #1, queue = 'com.apple.main-thread', stop reason = EXC_BAD_ACCESS (code=1, address=0xc)
+    frame #0: 0x000000010000f818 filter_P_type_LST`Tensor::Blowdown5(int) + 1520
+filter_P_type_LST`Tensor::Blowdown5:
+->  0x10000f818 <+1520>: ldr    w10, [x9, x8]
+    0x10000f81c <+1524>: add    w10, w10, #0x1
+    0x10000f820 <+1528>: str    w10, [x9, x8]
+    0x10000f824 <+1532>: add    x1, x9, w24, sxtw #2
+Target 0: (filter_P_type_LST) stopped.
+Process 13432 launched: '/Users/seongminjeon/Desktop/external_generator/filter_P_type_LST' (arm64)
+(lldb) bt
+* thread #1, queue = 'com.apple.main-thread', stop reason = EXC_BAD_ACCESS (code=1, address=0xc)
+  * frame #0: 0x000000010000f818 filter_P_type_LST`Tensor::Blowdown5(int) + 1520
+    frame #1: 0x00000001000116b4 filter_P_type_LST`Tensor::ForcedBlowdown() + 112
+    frame #2: 0x0000000100004d08 filter_P_type_LST`get_endpoint_types(Topology_enhanced const&) + 176
+    frame #3: 0x0000000100005f00 filter_P_type_LST`main + 3156
+    frame #4: 0x0000000181bc7154 dyld`start + 2476
+

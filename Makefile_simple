@@ -1,0 +1,76 @@
+# Makefile for external_generator_simple
+# Simplified version with LST/SCFT classification
+
+CXX = g++
+CXXFLAGS = -std=c++17 -O3 -Wall -Wextra -pthread
+LDFLAGS = -pthread
+
+# Eigen include path
+EIGEN_INCLUDE = -I/opt/homebrew/include/eigen3
+
+INCLUDES = $(EIGEN_INCLUDE)
+
+# Target
+TARGET = external_generator_simple
+
+# Source files
+SRC = external_generator_simple.cpp \
+      Topology_enhanced.cpp \
+      TopologyDB_enhanced.cpp \
+      TopoLineCompact_enhanced.cpp \
+      Tensor.C
+
+# Object files
+OBJ = $(SRC:.cpp=.o)
+OBJ := $(OBJ:.C=.o)
+
+# Dependency files
+DEP = $(OBJ:.o=.d)
+
+# ============================================================================
+# Build Rules
+# ============================================================================
+
+.PHONY: all clean distclean help
+
+all: $(TARGET)
+
+$(TARGET): $(OBJ)
+	@echo "Linking $@..."
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	@echo "✅ Build complete: $@"
+
+%.o: %.cpp
+	@echo "Compiling $<..."
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
+
+%.o: %.C
+	@echo "Compiling $<..."
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
+
+clean:
+	@echo "Cleaning..."
+	rm -f $(OBJ) $(DEP)
+
+distclean: clean
+	@echo "Removing executable..."
+	rm -f $(TARGET)
+
+help:
+	@echo "Available targets:"
+	@echo "  all        - Build $(TARGET) (default)"
+	@echo "  clean      - Remove object files"
+	@echo "  distclean  - Remove all build artifacts"
+	@echo "  help       - Show this help"
+
+# Include dependencies
+-include $(DEP)
+
+# Platform detection
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+    EIGEN_INCLUDE ?= -I/opt/homebrew/include/eigen3
+endif
+ifeq ($(UNAME_S),Linux)
+    EIGEN_INCLUDE ?= -I/usr/include/eigen3
+endif
