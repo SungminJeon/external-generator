@@ -88,143 +88,159 @@ inline Tensor build_tensor(const Spec& sp){
             // s(12) 등 파라미터 내용은 현재 무시: 곡선 2개만 만든다.
             // instantons : notation 88(blowdown induced) 
             if (sp.param == 1) {t.AT(-1);}
-            else if (sp.param == 882 ) {t.AT(-2); t.AT(-1);}
-            else if (sp.param == 883 ) {t.AT(-2); t.AT(-2); t.AT(-1);}	
-            else if (sp.param == 884 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}	
-            else if (sp.param == 885 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}	
-            else if (sp.param == 886 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}	
-            else if (sp.param == 887 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}	
-            else if (sp.param == 8881 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 889 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 8810 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 8811 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 882 ) {t.AT(-2); t.AT(-1);}
+			else if (sp.param == 883 ) {t.AT(-2); t.AT(-2); t.AT(-1);}	
+			else if (sp.param == 884 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}	
+			else if (sp.param == 885 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}	
+			else if (sp.param == 886 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}	
+			else if (sp.param == 887 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}	
+			else if (sp.param == 8881 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 889 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 8810 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 8811 ) {t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-1);}
+		
+
+			else if (sp.param == 288 ) {t.AT(-1); t.AT(-2);}
+			else if (sp.param == 388 ) {t.AT(-1); t.AT(-2); t.AT(-2);}	
+			else if (sp.param == 488 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2);}	
+			else if (sp.param == 588 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}	
+			else if (sp.param == 688 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}	
+			else if (sp.param == 788 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}	
+			else if (sp.param == 1888 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}
+			else if (sp.param == 988 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}
+			else if (sp.param == 1088 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}
+			else if (sp.param == 1188 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}
+			
+
+			// interiors
+			else if (sp.param == 11 ) { t.AL(1,1); }
+			else if (sp.param == 22 ) { t.AL(2,2); }
+			else if (sp.param == 33 ) { t.AL(3,3); }
+			else if (sp.param == 44 ) { t.AL(4,4); }
+			else if (sp.param == 55 ) { t.AL(5,5); }
+			else if (sp.param == 331 ) { t.AL(3,3,1); }
+			else if (sp.param == 32 ) { t.AL(3,2); }
+			else if (sp.param == 23 ) { t.AL(2,3); }
+			else if (sp.param == 42 ) { t.AL(4,2); }
+			else if (sp.param == 24 ) { t.AL(2,4); }
+			else if (sp.param == 43 ) { t.AL(4,3); }
+			else if (sp.param == 34 ) { t.AL(3,4); }
+			else if (sp.param == 53 ) { t.AL(5,3); }
+			else if (sp.param == 35 ) { t.AL(3,5); }
+			else if (sp.param == 54 ) { t.AL(5,4); }
+			else if (sp.param == 45 ) { t.AL(4,5); }
+
+			// alkali 2 links with no -5 
+
+			else if (sp.param == 991 ) { t.AT(-2); t.ATS(-1,-3); t.AT(-1); }
+			else if (sp.param == 9920 ) { t.AT(-1); t.AT(-2); t.ATS(-2,-3); t.AT(-1); }
+			else if (sp.param == 9902 ) { t.AT(-1); t.ATS(-2,-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 993 ) { t.AT(-2); t.ATS(-1,-3); t.AT(-2); t.AT(-1); }
+			
+			// alkali 1 links with no -5
+
+			else if (sp.param == 91) {t.AT(-3); t.ATS(-2,-2); t.AT(-1); }
+			else if (sp.param == 92) {t.AT(-2); t.ATS(-2,-3); t.AT(-1); }
+			else if (sp.param == 93) {t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 94) {t.AT(-2);  t.AT(-3); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}  
+			else if (sp.param == 95) {t.AT(-2); t.AT(-2);  t.AT(-3); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 96) {t.AT(-3);  t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 97) {t.AT(-3);  t.AT(-2); t.AT(-1); }
+			else if (sp.param == 98) {t.AT(-2);  t.AT(-3); t.AT(-2); t.AT(-1);} 
+			else if (sp.param == 99) {t.AT(-2);  t.AT(-3); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 910) {t.AT(-2); t.AT(-2);  t.AT(-3); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 911) {t.AT(-3);  t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 912) {t.AT(-3);  t.AT(-1);}
+			else if (sp.param == 913) {t.AT(-2);  t.AT(-3); t.AT(-1); t.AT(-3); t.AT(-1);}
+			else if (sp.param == 914) {t.AT(-2); t.AT(-2);  t.AT(-3); t.AT(-1); t.AT(-3); t.AT(-1); }
+			else if (sp.param == 915) {t.AT(-3);  t.AT(-1); t.AT(-3); t.AT(-1);}
+			else if (sp.param == 916) {t.AT(-2);  t.AT(-3); t.AT(-1);}
+			else if (sp.param == 917) {t.AT(-2);  t.AT(-2); t.AT(-3); t.AT(-1);}
+
+			// alkali 3 links with one -5 curve
+			
+			else if (sp.param == 99910) {t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-1);}
+			else if (sp.param == 99901) {t.AT(-1);  t.AT(-3); t.AT(-1); t.ATS(-1,-5); t.AT(-1);}
+			else if (sp.param == 99920) {t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 99902) {t.AT(-1);  t.AT(-2); t.AT(-3); t.AT(-1); t.ATS(-1,-5); t.AT(-1);}
+			else if (sp.param == 99930) {t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 99903) {t.AT(-1);  t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.ATS(-1,-5); t.AT(-1);}
+
+			// alkali 2 links with one -5 curve
+			
+			
+			else if (sp.param == 994) {t.AT(-3); t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-1);}
+			else if (sp.param == 995) {t.AT(-3); t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 996) {t.AT(-3); t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 997) {t.AT(-2); t.AT(-3); t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 998) {t.AT(-2); t.AT(-3); t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 999) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 9910) {t.AT(-2); t.AT(-3); t.AT(-1); t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-1);}
+			else if (sp.param == 9911) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1);}
+			else if (sp.param == 9912) {t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 9913) {t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 9914) {t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); }
 
 
-            else if (sp.param == 288 ) {t.AT(-1); t.AT(-2);}
-            else if (sp.param == 388 ) {t.AT(-1); t.AT(-2); t.AT(-2);}	
-            else if (sp.param == 488 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2);}	
-            else if (sp.param == 588 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}	
-            else if (sp.param == 688 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}	
-            else if (sp.param == 788 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}	
-            else if (sp.param == 1888 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}
-            else if (sp.param == 988 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}
-            else if (sp.param == 1088 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}
-            else if (sp.param == 1188 ) {t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2); t.AT(-2);}
+			// alkali 1 links with one -5 curve
+	
+			else if (sp.param == 918) {t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 919) {t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 920) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 921) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 922) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 923) {t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 924) {t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 925) {t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 926) {t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 927) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 928) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 929) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 930) {t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 931) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 932) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 933) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 934) {t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
+			else if (sp.param == 935) {t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
+			else if (sp.param == 936) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
+			else if (sp.param == 937) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
+			else if (sp.param == 938) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
+			else if (sp.param == 939) {t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
+			else if (sp.param == 940) {t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-1); }
+			else if (sp.param == 941) {t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-1); }
+			else if (sp.param == 942) {t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); }
+			else if (sp.param == 943) {t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
+			else if (sp.param == 944) {t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 945) {t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
 
 
-            // interiors
-            else if (sp.param == 11 ) { t.AL(1,1); }
-            else if (sp.param == 22 ) { t.AL(2,2); }
-            else if (sp.param == 33 ) { t.AL(3,3); }
-            else if (sp.param == 44 ) { t.AL(4,4); }
-            else if (sp.param == 55 ) { t.AL(5,5); }
-            else if (sp.param == 331 ) { t.AL(3,3,1); }
-            else if (sp.param == 32 ) { t.AL(3,2); }
-            else if (sp.param == 23 ) { t.AL(2,3); }
-            else if (sp.param == 42 ) { t.AL(4,2); }
-            else if (sp.param == 24 ) { t.AL(2,4); }
-            else if (sp.param == 43 ) { t.AL(4,3); }
-            else if (sp.param == 34 ) { t.AL(3,4); }
-            else if (sp.param == 53 ) { t.AL(5,3); }
-            else if (sp.param == 35 ) { t.AL(3,5); }
-            else if (sp.param == 54 ) { t.AL(5,4); }
-            else if (sp.param == 45 ) { t.AL(4,5); }
-
-            // alkali 2 links with no -5 
-
-            else if (sp.param == 991 ) { t.AT(-2); t.ATS(-1,-3); t.AT(-1); }
-            else if (sp.param == 9920 ) { t.AT(-1); t.AT(-2); t.ATS(-2,-3); t.AT(-1); }
-            else if (sp.param == 9902 ) { t.AT(-1); t.ATS(-2,-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 993 ) { t.AT(-2); t.ATS(-1,-3); t.AT(-2); t.AT(-1); }
-
-            // alkali 1 links with no -5
-
-            else if (sp.param == 91) {t.AT(-3); t.ATS(-2,-2); t.AT(-1); }
-            else if (sp.param == 92) {t.AT(-2); t.ATS(-2,-3); t.AT(-1); }
-            else if (sp.param == 93) {t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 94) {t.AT(-2);  t.AT(-3); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}  
-            else if (sp.param == 95) {t.AT(-2); t.AT(-2);  t.AT(-3); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 96) {t.AT(-3);  t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 97) {t.AT(-3);  t.AT(-2); t.AT(-1); }
-            else if (sp.param == 98) {t.AT(-2);  t.AT(-3); t.AT(-2); t.AT(-1);} 
-            else if (sp.param == 99) {t.AT(-2);  t.AT(-3); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 910) {t.AT(-2); t.AT(-2);  t.AT(-3); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 911) {t.AT(-3);  t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 912) {t.AT(-3);  t.AT(-1);}
-            else if (sp.param == 913) {t.AT(-2);  t.AT(-3); t.AT(-1); t.AT(-3); t.AT(-1);}
-            else if (sp.param == 914) {t.AT(-2); t.AT(-2);  t.AT(-3); t.AT(-1); t.AT(-3); t.AT(-1); }
-            else if (sp.param == 915) {t.AT(-3);  t.AT(-1); t.AT(-3); t.AT(-1);}
-            else if (sp.param == 916) {t.AT(-2);  t.AT(-3); t.AT(-1);}
-            else if (sp.param == 917) {t.AT(-2);  t.AT(-2); t.AT(-3); t.AT(-1);}
-
-            // alkali 3 links with one -5 curve
-
-            else if (sp.param == 99910) {t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-1);}
-            else if (sp.param == 99901) {t.AT(-1);  t.AT(-3); t.AT(-1); t.ATS(-1,-5); t.AT(-1);}
-            else if (sp.param == 99920) {t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 99902) {t.AT(-1);  t.AT(-2); t.AT(-3); t.AT(-1); t.ATS(-1,-5); t.AT(-1);}
-            else if (sp.param == 99930) {t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 99903) {t.AT(-1);  t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.ATS(-1,-5); t.AT(-1);}
-
-            // alkali 2 links with one -5 curve
+			// alkali 2 links with two -5 curves
+			
+			else if (sp.param == 9915) {t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 9916) {t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 9917) {t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
 
 
-            else if (sp.param == 994) {t.AT(-3); t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-1);}
-            else if (sp.param == 995) {t.AT(-3); t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 996) {t.AT(-3); t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 997) {t.AT(-2); t.AT(-3); t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 998) {t.AT(-2); t.AT(-3); t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 999) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1);  t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 9910) {t.AT(-2); t.AT(-3); t.AT(-1); t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-1);}
-            else if (sp.param == 9911) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.ATS(-1,-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1);}
-            else if (sp.param == 9912) {t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 9913) {t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 9914) {t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); }
+			// alkali 1 links with two -5 curves
+
+			else if (sp.param == 946) {t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 947) {t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 948) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 949) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 950) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 951) {t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 952) {t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 953) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 954) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
+			else if (sp.param == 955) {t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
+			else if (sp.param == 956) {t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
+			else if (sp.param == 957) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
 
 
-            // alkali 1 links with one -5 curve
 
-            else if (sp.param == 918) {t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 919) {t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 920) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 921) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 922) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 923) {t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 924) {t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 925) {t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 926) {t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 927) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 928) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 929) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 930) {t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 931) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 932) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 933) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 934) {t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
-            else if (sp.param == 935) {t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
-            else if (sp.param == 936) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
-            else if (sp.param == 937) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
-            else if (sp.param == 938) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 939) {t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 940) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 941) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 942) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 943) {t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 944) {t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 945) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 946) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 947) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 948) {t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 949) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 950) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 951) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); }
-            else if (sp.param == 952) {t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
-            else if (sp.param == 953) {t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
-            else if (sp.param == 954) {t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
-            else if (sp.param == 955) {t.AT(-2); t.AT(-2); t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
-            else if (sp.param == 956) {t.AT(-3); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
-            else if (sp.param == 957) {t.AT(-2); t.AT(-3); t.AT(-2); t.AT(-1); t.AT(-5); t.AT(-1); t.AT(-3); t.AT(-1); }
-            break;
+
+
+			break;
 
         case Kind::Node:
             // n(1..12): 각각 g, g-L, ..., g-L^11로 최대 12개 곡선
