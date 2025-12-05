@@ -365,7 +365,7 @@ void Tensor::ForcedBlowdown()
 	bool c;
 	for( int i = 0; i < T; i++)
 	{
-		if(intersection_form(i,i) == -1 )
+		if(intersection_form(i,i) == -1 && b0_comp[i]==1)
 
 		{
 			c = this->Blowdown5(i+1);
