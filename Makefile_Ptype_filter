@@ -1,0 +1,197 @@
+# Makefile_Ptype_filter
+# P-type Endpoint Filter with b_0Q Condition
+# Automatically finds Eigen installation
+
+CXX = g++
+CXXFLAGS = -std=c++17 -O3 -Wall -Wextra
+
+# Auto-detect Eigen path on macOS
+# Try multiple common locations
+EIGEN_PATHS := \
+	/opt/homebrew/include/eigen3 \
+	/usr/local/include/eigen3 \
+	/opt/local/include/eigen3 \
+	/usr/include/eigen3 \
+	$(HOME)/eigen3 \
+	./eigen3
+
+# Find first existing path
+EIGEN_PATH := $(firstword $(foreach path,$(EIGEN_PATHS),$(wildcard $(path))))
+
+# If not found, use default and show warning
+ifeq ($(EIGEN_PATH),)
+    $(warning ========================================)
+    $(warning Eigen3 not found in common locations!)
+    $(warning Please install with: brew install eigen)
+    $(warning Or specify path: make EIGEN_PATH=/your/path)
+    $(warning ========================================)
+    EIGEN_PATH := /usr/local/include/eigen3
+endif
+
+INCLUDES = -I. -I$(EIGEN_PATH)
+
+# Source files
+SOURCES = filter_P_type.cpp \
+          Tensor.C \
+          Topology_enhanced.cpp \
+          TopoLineCompact_enhanced.cpp \
+          TopologyDB_enhanced.cpp
+
+# Object files
+OBJECTS = $(SOURCES:.cpp=.o)
+OBJECTS := $(OBJECTS:.C=.o)
+
+# Target
+TARGET = filter_P_type
+
+# Colors for output
+COLOR_GREEN = \033[0;32m
+COLOR_BLUE = \033[0;34m
+COLOR_RED = \033[0;31m
+COLOR_RESET = \033[0m
+
+all: show-config $(TARGET)
+
+show-config:
+	@echo "========================================="
+	@echo "  P-type Filter - Build Configuration"
+	@echo "  (with b_0Q = 2 condition)"
+	@echo "========================================="
+	@echo "Compiler: $(CXX)"
+	@echo "Flags:    $(CXXFLAGS)"
+	@echo "Eigen:    $(EIGEN_PATH)"
+	@echo "========================================="
+	@echo ""
+
+$(TARGET): $(OBJECTS)
+	@echo "$(COLOR_BLUE)[Linking]$(COLOR_RESET) $@"
+	$(CXX) $(CXXFLAGS) -o $@ $^
+	@echo ""
+	@echo "$(COLOR_GREEN)=========================================$(COLOR_RESET)"
+	@echo "$(COLOR_GREEN)  Build Successful!$(COLOR_RESET)"
+	@echo "$(COLOR_GREEN)=========================================$(COLOR_RESET)"
+	@echo "Executable: $(TARGET)"
+	@echo ""
+	@echo "Usage:"
+	@echo "  ./$(TARGET) <input_file> <output_file> [options]"
+	@echo ""
+	@echo "Options:"
+	@echo "  --verbose    Show detailed progress"
+	@echo "  --quiet      Minimal output"
+	@echo ""
+	@echo "P-type Conditions:"
+	@echo "  1. Endpoint self-intersection = 0"
+	@echo "  2. Endpoint b_0Q = 2  ✓ NEW!"
+	@echo ""
+	@echo "Examples:"
+	@echo "  ./$(TARGET) input.txt P_type_output.txt"
+	@echo "  ./$(TARGET) input.txt output.txt --verbose"
+	@echo ""
+
+%.o: %.cpp
+	@echo "$(COLOR_BLUE)[Compiling]$(COLOR_RESET) $<"
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+%.o: %.C
+	@echo "$(COLOR_BLUE)[Compiling]$(COLOR_RESET) $<"
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+clean:
+	@echo "Cleaning build files..."
+	rm -f $(OBJECTS) $(TARGET)
+	@echo "Done!"
+
+rebuild: clean all
+
+# Check if Eigen is properly installed
+check-eigen:
+	@echo "Checking for Eigen3..."
+	@if [ -d "$(EIGEN_PATH)" ]; then \
+		echo "$(COLOR_GREEN)✓ Found Eigen at: $(EIGEN_PATH)$(COLOR_RESET)"; \
+		if [ -f "$(EIGEN_PATH)/Eigen/Dense" ]; then \
+			echo "$(COLOR_GREEN)✓ Eigen/Dense exists$(COLOR_RESET)"; \
+		else \
+			echo "$(COLOR_RED)✗ Eigen/Dense not found!$(COLOR_RESET)"; \
+		fi \
+	else \
+		echo "$(COLOR_RED)✗ Eigen not found at: $(EIGEN_PATH)$(COLOR_RESET)"; \
+		echo ""; \
+		echo "Install Eigen with:"; \
+		echo "  brew install eigen"; \
+		echo ""; \
+		echo "Or download from: https://eigen.tuxfamily.org/"; \
+	fi
+
+# Install Eigen (macOS only)
+install-eigen:
+	@echo "Installing Eigen3 via Homebrew..."
+	@if command -v brew >/dev/null 2>&1; then \
+		brew install eigen; \
+		echo "$(COLOR_GREEN)Eigen installed!$(COLOR_RESET)"; \
+	else \
+		echo "Homebrew not found. Install from: https://brew.sh"; \
+		echo "Or install Eigen manually from: https://eigen.tuxfamily.org/"; \
+	fi
+
+# Test build (compile only, don't run)
+test-build: $(TARGET)
+	@echo ""
+	@echo "$(COLOR_GREEN)Build test passed!$(COLOR_RESET)"
+	@echo "Run with: ./$(TARGET) <input> <output>"
+
+# Show detailed info about P-type conditions
+info:
+	@echo "========================================="
+	@echo "  P-type Endpoint Filter"
+	@echo "========================================="
+	@echo ""
+	@echo "This filter identifies LST topologies with"
+	@echo "P-type endpoints only."
+	@echo ""
+	@echo "P-type Endpoint Conditions:"
+	@echo "  1. Self-intersection = 0 (geometric)"
+	@echo "  2. b_0Q = 2 (algebraic) ✓ NEW!"
+	@echo ""
+	@echo "Both conditions must be satisfied!"
+	@echo ""
+	@echo "Input:  Line-compact topology file (.txt)"
+	@echo "Output: Filtered topologies (.txt)"
+	@echo ""
+	@echo "Example workflow:"
+	@echo "  1. Generate LST topologies"
+	@echo "  2. Run: ./$(TARGET) all.txt P_only.txt"
+	@echo "  3. Use P_only.txt for further analysis"
+	@echo ""
+	@echo "For more info, see:"
+	@echo "  - CHANGES_EXPLAINED.md"
+	@echo "  - BLOWDOWN5_B0Q_ANALYSIS.md"
+	@echo ""
+
+# Show help
+help:
+	@echo "Makefile_Ptype_filter - P-type Endpoint Filter"
+	@echo ""
+	@echo "Targets:"
+	@echo "  make                  Build the program (default)"
+	@echo "  make clean            Remove build files"
+	@echo "  make rebuild          Clean and rebuild"
+	@echo "  make check-eigen      Verify Eigen installation"
+	@echo "  make install-eigen    Install Eigen via brew"
+	@echo "  make test-build       Test compilation only"
+	@echo "  make info             Show P-type filter information"
+	@echo "  make help             Show this help"
+	@echo ""
+	@echo "Manual Eigen path:"
+	@echo "  make EIGEN_PATH=/your/path/to/eigen3"
+	@echo ""
+	@echo "After build:"
+	@echo "  ./$(TARGET) <input.txt> <output.txt> [--verbose]"
+	@echo ""
+	@echo "Example:"
+	@echo "  ./$(TARGET) LST_all.txt P_type_only.txt --verbose"
+	@echo ""
+	@echo "P-type conditions:"
+	@echo "  - Endpoint self-intersection = 0"
+	@echo "  - Endpoint b_0Q = 2 ✓"
+
+.PHONY: all clean rebuild check-eigen install-eigen test-build info help show-config

@@ -1,6 +1,7 @@
 // external_generator_simple.cpp
 // Simplified External curve generator with LST/SCFT classification
 // Supports directory input and s(0) notation for attachment specification
+// ✨ ENHANCED: Gluing rules based on self-intersection of attachment curve
 
 #include <fstream>
 #include <iostream>
@@ -27,6 +28,71 @@ using ::NodeRef;
 using ::AttachmentPoint;
 using ::Spec;
 using ::TheoryGraph;
+
+// ============================================================================
+// ✨ GLUING RULES - EDIT HERE
+// ============================================================================
+// Maps self-intersection of attachment curve -> allowed external parameters
+// Edit this function to change the gluing rules!
+
+std::vector<int> get_allowed_external_params(int self_int) {
+    // =====================================================
+    // GLUING RULE TABLE
+    // self_int: self-intersection of the curve where external attaches
+    // Returns: list of allowed external curve parameters
+    // =====================================================
+    
+    switch (self_int) {
+        // Node curves
+        case -12: return {1};            // e8
+        case -11: return {1};            // e8'
+        case -10: return {1};            // e8''
+        case -9:  return {1};            // e8'''
+        case -8:  return {1};            // e7
+        case -7:  return {1};         // e7'
+        case -6:  return {1};         // e6
+        case -5:  return {1};      // f4
+        case -4:  return {1};      // so8
+        case -3:  return {1, 2};   // su2
+        
+        // Link curves (typically -1, -2)
+        case -2:  return {1, 2, 3};
+        case -1:  return {1, 2, 3, 5};
+        
+        // Default: allow all
+        default:  return {1, 2, 3, 5};
+    }
+}
+
+// Alternative: If you want even more control, use this version
+// which considers both self_int and the parent type/param
+/*
+std::vector<int> get_allowed_external_params_advanced(
+    int self_int,           // Self-intersection of attachment curve
+    int parent_type,        // 0=block, 1=sidelink, 2=instanton
+    int parent_param,       // Parameter of the parent (e.g., 944 for SideLink)
+    int port_idx            // Port index on the parent
+) {
+    // Example: Different rules for different parent types
+    if (parent_type == 0) {  // Block (Node)
+        // Node-specific rules
+        switch (self_int) {
+            case -6: return {1, 2};
+            case -5: return {1, 2, 3};
+            // ...
+        }
+    } else if (parent_type == 1) {  // SideLink
+        // SideLink-specific rules based on param
+        if (parent_param >= 940 && parent_param <= 950) {
+            // Special alkali links
+            return {1, 2};
+        }
+    }
+    
+    // Default
+    return {1, 2, 3, 5};
+}
+*/
 
 // ============================================================================
 // Configuration
@@ -254,9 +320,22 @@ bool parse_attachment_spec(const std::string& spec, AttachmentSpec& out) {
 
 struct PortInfo {
     int parent_id;
-    int parent_type;  // 0=block, 1=sidelink, 2=instanton
+    int parent_type;    // 0=block, 1=sidelink, 2=instanton
     int port_idx;
+    int self_int;       // ✨ Self-intersection of the curve at this port
+    int parent_param;   // ✨ Parameter of the parent (for advanced rules)
 };
+
+// ✨ Helper: Get intersection form diagonal for a spec
+std::vector<int> get_spec_diagonal(const Spec& sp) {
+    Tensor t = build_tensor(sp);
+    auto IF = t.GetIntersectionForm();
+    std::vector<int> diag;
+    for (int i = 0; i < IF.rows(); ++i) {
+        diag.push_back(IF(i, i));
+    }
+    return diag;
+}
 
 std::vector<PortInfo> get_possible_ports(const Topology_enhanced& T, const AttachmentSpec& spec) {
     std::vector<PortInfo> ports;
@@ -266,28 +345,67 @@ std::vector<PortInfo> get_possible_ports(const Topology_enhanced& T, const Attac
             if (spec.index >= 0 && spec.index < (int)T.block.size()) {
                 const auto& block = T.block[spec.index];
                 
-                // Default port
-                ports.push_back({spec.index, 0, 0});
+                // Build spec to get diagonal
+                Spec sp;
+                switch(block.kind) {
+                    case LKind::g: sp = n(block.param); break;
+                    case LKind::L: sp = i(block.param); break;
+                    case LKind::S: sp = s(block.param); break;
+                    case LKind::I: sp = s(block.param); break;
+                    case LKind::E: sp = e(block.param); break;
+                    default: sp = n(block.param); break;
+                }
                 
-                // Interior links (L) have additional ports
-                if (block.kind == LKind::L) {
-                    ports.push_back({spec.index, 0, 1});  // Middle
-                    ports.push_back({spec.index, 0, 2});  // Right
+                auto diag = get_spec_diagonal(sp);
+                
+                // Add all possible ports with their self-intersections
+                for (int port_idx = 0; port_idx < (int)diag.size(); ++port_idx) {
+                    ports.push_back({
+                        spec.index,         // parent_id
+                        0,                  // parent_type (Block)
+                        port_idx,           // port_idx
+                        diag[port_idx],     // self_int
+                        block.param         // parent_param
+                    });
                 }
             }
             break;
             
         case AttachmentSpec::SideLink:
             if (spec.index >= 0 && spec.index < (int)T.side_links.size()) {
-                // SideLinks typically have only default port
-                ports.push_back({spec.index, 1, 0});
+                int param = T.side_links[spec.index].param;
+                Spec sp = s(param);
+                auto diag = get_spec_diagonal(sp);
+                
+                // Add all possible ports
+                for (int port_idx = 0; port_idx < (int)diag.size(); ++port_idx) {
+                    ports.push_back({
+                        spec.index,         // parent_id
+                        1,                  // parent_type (SideLink)
+                        port_idx,           // port_idx
+                        diag[port_idx],     // self_int
+                        param               // parent_param
+                    });
+                }
             }
             break;
             
         case AttachmentSpec::Instanton:
             if (spec.index >= 0 && spec.index < (int)T.instantons.size()) {
-                // Instantons typically have only default port
-                ports.push_back({spec.index, 2, 0});
+                int param = T.instantons[spec.index].param;
+                Spec sp = s(param);  // Instantons use SideLink spec
+                auto diag = get_spec_diagonal(sp);
+                
+                // Add all possible ports
+                for (int port_idx = 0; port_idx < (int)diag.size(); ++port_idx) {
+                    ports.push_back({
+                        spec.index,         // parent_id
+                        2,                  // parent_type (Instanton)
+                        port_idx,           // port_idx
+                        diag[port_idx],     // self_int
+                        param               // parent_param
+                    });
+                }
             }
             break;
     }
@@ -400,9 +518,6 @@ void process_topology(const Topology_enhanced& base, const Config& config,
         return;
     }
     
-    // Allowed external parameters
-    static const std::vector<int> allowed_ext_params = {1, 2, 3, 5};
-    
     // Process each attachment specification
     for (const auto& spec_str : config.attachment_specs) {
         AttachmentSpec spec;
@@ -418,6 +533,20 @@ void process_topology(const Topology_enhanced& base, const Config& config,
         
         // Try each port
         for (const auto& port : ports) {
+            // ✨ Get allowed external params based on self-intersection
+            std::vector<int> allowed_ext_params = get_allowed_external_params(port.self_int);
+            
+            if (config.verbose) {
+                std::cout << "  Port " << spec.describe() << "[" << port.port_idx << "]"
+                          << " (self-int=" << port.self_int << ")"
+                          << " allows: {";
+                for (size_t i = 0; i < allowed_ext_params.size(); ++i) {
+                    if (i > 0) std::cout << ", ";
+                    std::cout << allowed_ext_params[i];
+                }
+                std::cout << "}\n";
+            }
+            
             // Try each allowed external parameter
             for (int ext_param : allowed_ext_params) {
                 Topology_enhanced T = base;  // Copy
@@ -492,6 +621,10 @@ void print_usage(const char* prog) {
               << "  s(N)  - Attach External to all ports of SideLink N\n"
               << "  b(N)  - Attach External to all ports of Block N\n"
               << "  i(N)  - Attach External to all ports of Instanton N\n"
+              << "\nGluing Rules:\n"
+              << "  External parameters are filtered based on the self-intersection\n"
+              << "  of the attachment curve. Edit get_allowed_external_params() in\n"
+              << "  the source code to modify the rules.\n"
               << "\nExamples:\n"
               << "  # Classify only\n"
               << "  " << prog << " -i input.txt -o output_dir\n"
@@ -502,7 +635,7 @@ void print_usage(const char* prog) {
               << "  # Add External to multiple locations\n"
               << "  " << prog << " -i input.txt -o output_dir -a s(0) -a s(1) -a b(2)\n"
               << "\n"
-              << "  # Process directory\n"
+              << "  # Process directory with verbose output\n"
               << "  " << prog << " -i input_dir -o output_dir -a s(0) -v\n";
 }
 
@@ -551,6 +684,7 @@ int main(int argc, char* argv[]) {
         for (const auto& spec : config.attachment_specs) {
             std::cout << "  - " << spec << "\n";
         }
+        std::cout << "\nGluing rules active (see get_allowed_external_params)\n";
     }
     std::cout << "\n";
     
